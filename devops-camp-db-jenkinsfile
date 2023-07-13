@@ -61,15 +61,6 @@ pipeline {
                       }
                   }
               }
-              stage('Security scanning') {
-            steps {
-                  withCredentials([usernamePassword(credentialsId: 'DToure-harbor-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                      echo "Scanning $DB_IMAGE_NAME image"
-                      sh 'python harbor_scanner.py -i $DB_IMAGE_NAME -r $HARBOR_REGISTRY -p $HARBOR_PROJECT -c ${USERNAME}:${PASSWORD}'
-                  }
-             }
-            }
-        }
               stage('Deploy') {
                   steps {
                       echo "Deployment stage"
@@ -80,6 +71,15 @@ pipeline {
            }
         }
     }
+    stage('Security scanning') {
+            steps {
+                  withCredentials([usernamePassword(credentialsId: 'DToure-harbor-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                      echo "Scanning $DB_IMAGE_NAME image"
+                      sh 'python harbor_scanner.py -i $DB_IMAGE_NAME -r $HARBOR_REGISTRY -p $HARBOR_PROJECT -c ${USERNAME}:${PASSWORD}'
+                  }
+             }
+    }
+
     post {
         cleanup {
             echo "Clean workspace"
