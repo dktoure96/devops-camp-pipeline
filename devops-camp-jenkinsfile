@@ -54,7 +54,8 @@ pipeline {
                 }
             }
         }
-        stage('Security scanning') {
+        //TODO("Lab 7 - Automated Security Scans"): add a stage
+         stage('Security scanning') {
             steps {
                   withCredentials([usernamePassword(credentialsId: 'DToure-harbor-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                       echo "Scanning $APP_IMAGE_NAME image"
@@ -62,7 +63,6 @@ pipeline {
                   }
             }
         }
-        //TODO("Lab 7 - Automated Security Scans"): add a stage
         stage('Deploy') {
             steps {
                 echo "Deployment stage"
